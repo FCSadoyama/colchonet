@@ -1,5 +1,11 @@
+# encoding: utf-8
 class User < ApplicationRecord
     EMAIL_REGEXP = /\A[^@]+@([^@\.]+\.)+[^@\.]+\z/
+
+    # default_scope -> { where('confirmed_at IS NOT NULL') }
+
+    scope :most_recent, -> { order('created_at DESC') }
+    scope :confirmed, -> { where.not(confirmed_at: nil) }
 
     validates_presence_of :email, :full_name, :location
     validates_length_of :bio, minimum: 30, allow_blank: false
@@ -17,7 +23,14 @@ class User < ApplicationRecord
         self.confirmation_token = ''
         save!
     end
+
     def confirmed?
         confirmed_at.present?
+    end
+
+    def self.authenticate(email, password)
+        user = confirmed.
+          find_by(email: email).
+          try(:authenticate, password)
     end
 end
