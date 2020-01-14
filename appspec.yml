@@ -4,6 +4,11 @@ files:
   - source: /
     destination: /dev/shm/colchonet
 hooks:
+  BeforeInstall:
+    - location: scripts/remove_project
+      timeout: 5800
+      runas: root
+  AfterInstall:
     - location: scripts/bundle_install
       timeout: 5800
       runas: root
