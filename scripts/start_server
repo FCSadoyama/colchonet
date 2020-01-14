@@ -2,4 +2,4 @@
 cd /home/ec2-user/colchonet
 
 rake db:migrate
-nohup rails s -p 80 &
+bundle exec puma -p 80 -d
