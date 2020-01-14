@@ -1,0 +1,21 @@
+ version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /dev/shm/colchonet
+hooks:
+    - location: scripts/bundle_install
+      timeout: 5800
+      runas: root
+  ApplicationStart:
+    - location: scripts/start_server
+      timeout: 5800
+      runas: root
+  ValidateService:
+    - location: scripts/validate_service
+      timeout: 120
+      runas: root
+  ApplicationStop:
+    - location: scripts/stop_server
+      timeout: 300
+      runas: root

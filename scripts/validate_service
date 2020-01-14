@@ -1,0 +1,21 @@
+#!/bin/bash
+
+function validate {
+  if $(curl -Is $1 | head -n 1 | grep -q "200 OK"); then
+    return 0
+  else
+    exit 1
+  fi
+}
+
+function add_host {
+  if (cat /etc/hosts | grep "$1"); then
+    return 0
+  else
+    echo "$1" >> /etc/hosts
+  fi
+}
+
+add_host "127.0.0.1	validate.colchonet"
+
+validate validate.colchonet
